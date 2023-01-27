@@ -24,6 +24,7 @@ from modules.detect_face import detectFace
 from modules.detect_parkingspace import detectparking
 from modules.detect_fire import detectFire
 from modules.status import *
+from modules.options import ai_action
 from camera_links import cameraConnect 
 from Forms import resource
 import home_
@@ -1317,19 +1318,29 @@ class Live_view(QWidget):
             lst = [selected_analytics,index]
             cam_link = self.cam_links[index]
 
-            if index==0 and selected_analytics==5:
+            if index==0 and selected_analytics==5:   # Fire - CAM1
+                self.ShowOption()
                 self.cam1_analytics_start()
+            elif index==0 and selected_analytics==1: # Face - CAM1
+                self.ShowOption()
+                self.cam1_face_start() 
+            elif index==0 and selected_analytics==2: # Parking - CAM1
+                self.ShowOption()
+                self.cam1_parking_start() 
             elif index==1 and selected_analytics==2:
+                self.ShowOption()
                 self.cam2_analytics_start()
             elif index==2 and selected_analytics==1:
+                self.ShowOption()
                 self.cam3_analytics_start()
             elif index==3 and selected_analytics==5:
+                self.ShowOption()
                 self.cam4_analytics_start()          
             elif index==4 and selected_analytics==2:
+                self.ShowOption()
                 self.cam5_analytics_start()  
-            elif index==5 and selected_analytics==2:
-                self.cam6_analytics_start() 
             elif index==6 and selected_analytics==2:
+                self.ShowOption()
                 self.cam7_analytics_start() 
             elif index==7 and selected_analytics==2:
                 self.cam8_analytics_start() 
@@ -1338,9 +1349,7 @@ class Live_view(QWidget):
             elif index==9 and selected_analytics==2:
                 self.cam10_analytics_start() 
             elif index==10 and selected_analytics==2:
-                self.cam11_analytics_start() 
-            elif index==11 and selected_analytics==2:
-                self.cam12_analytics_start()                                                
+                self.cam11_analytics_start()                                                
             else:
                 QMessageBox.information(self, "Analytics", f"Please Select Appropiate Analytics!")  
 
@@ -1417,9 +1426,10 @@ class Live_view(QWidget):
             #self.proc[index].join()        	
             recObj._record = False
 
+    def ShowOption(self):
+        self.ui = ai_action()
+        self.ui.show()
         
-             
-
     def cam1(self):
         try:
             self.layout.itemAt(0).widget().setVisible(True)
@@ -2107,7 +2117,7 @@ class Live_view(QWidget):
 #---------------------------------CAMERA ANALYSIS FOOTAGE THROUGH THREADING--------------------
 #-----------------------------------------------------------------------------------------------------------
 
-#------------------------------------CAM-1-----------------------------------
+#------------------------------------CAM-1- Fire-----------------------------------
     def cam1_raw_start(self): 
         self.cam1_raw = modules.thread.ThreadVideo(self,self.cam_links[0], 0)
         self.cam1_raw.imgSignal.connect(self.getImg)
@@ -2115,6 +2125,9 @@ class Live_view(QWidget):
     def cam1_analytics_start(self): 
         try:
             self.cam1_raw_stop()
+            self.cam1_analytics_stop()
+            self.cam1_face_stop()
+            self.cam1_parking_stop()
             print("Stopped")
         except:
             pass
@@ -2125,6 +2138,39 @@ class Live_view(QWidget):
         self.cam1_raw.stop()
     def cam1_analytics_stop(self): 
         self.cam1_analytics.stop()
+
+
+#------------------------------------CAM-1 - Face-----------------------------------
+    def cam1_face_start(self): 
+        try:
+            self.cam1_raw_stop()
+            self.cam1_analytics_stop()
+            self.cam1_face_stop()
+            self.cam1_parking_stop()
+            print("Stopped")
+        except:
+            pass
+        self.cam1_analytics_face = modules.detect_face.detectFace(self,self.cam_links[0], 0) #detectface
+        self.cam1_analytics_face.imgSignal.connect(self.getImg)
+        self.cam1_analytics_face.start() 
+    def cam1_face_stop(self): 
+        self.cam1_analytics_face.stop()
+#------------------------------------CAM-1 - Parking-----------------------------------
+    def cam1_parking_start(self): 
+        try:
+            self.cam1_raw_stop()
+            self.cam1_analytics_stop()
+            self.cam1_face_stop()
+            self.cam1_parking_stop()
+            print("Stopped")
+        except:
+            pass
+        self.cam1_analytics_parking = modules.detect_parkingspace.detectparking(self,self.cam_links[0], 0) #detectparking
+        self.cam1_analytics_parking.imgSignal.connect(self.getImg)
+        self.cam1_analytics_parking.start() 
+    def cam1_parking_stop(self): 
+        self.cam1_analytics_parking.stop()
+
 
 #------------------------------------CAM-2-----------------------------------
     def cam2_raw_start(self): 
