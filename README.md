@@ -34,3 +34,8 @@ $ pip install -r requirements.txt
 ![](screens/6.JPG)
 ### Device Manager Screen
 ![](screens/7.JPG)
+
+### Judge Suggestion + Task 1 : Keeping the action settings after detection
+![](screens/sug_1.JPG)
+### Judge Suggestion + Task 2 : Sending the detection info through a server and scope for further hardware/action integration
+![](screens/sug_2.JPG)
