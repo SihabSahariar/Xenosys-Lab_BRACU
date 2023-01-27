@@ -21,16 +21,16 @@ $ pip install -r requirements.txt
 
 # User Interface
 ### Spalsh Screen
-![](screens/1.PNG)
+![](screens/1.JPG)
 ### Home Screen
-![](screens/2.PNG)
+![](screens/2.JPG)
 ### Live View- Normal Screen
-![](screens/3.PNG)
+![](screens/3.JPG)
 ### Live View - AI Analytics
-![](screens/4.PNG)
+![](screens/4.JPG)
 ### Sub Screen of Stream
-![](screens/5.PNG)
+![](screens/5.JPG)
 ### Grid Screen
-![](screens/6.PNG)
+![](screens/6.JPG)
 ### Device Manager Screen
-![](screens/7.PNG)
+![](screens/7.JPG)
