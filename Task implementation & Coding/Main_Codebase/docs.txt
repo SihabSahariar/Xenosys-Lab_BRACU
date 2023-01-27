@@ -1,4 +1,4 @@
-Functions :
+Parking Functions :
  
 Offset - 0-100
 Skip Frame - 0-100
@@ -6,10 +6,7 @@ Line_Visible : True/False
 Checkbox - Horizontal, Vertical
 Line Position : H, V
 
-
-
 Objects:
-
 offset_1
 skip_1
 line_show_1
