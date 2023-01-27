@@ -1,7 +1,9 @@
 from PyQt5.QtWidgets import (QWidget, QLabel, QVBoxLayout, QGridLayout, QSizePolicy, QDialog, QPushButton, QTableWidget, QTableWidgetItem, QAbstractItemView, QMessageBox, QApplication)
 from PyQt5.QtCore import (QThread, pyqtSignal, pyqtSlot, Qt, QSize, QTimer, QTime, QDate, QObject, QEvent)
 from PyQt5.QtGui import (QImage, QPixmap, QFont, QIcon, QColor)
-
+import requests
+import json
+import datetime
 from functools import partial
 from threading import Lock
 import numpy as np
@@ -22,8 +24,7 @@ import random
 ## Code Xenosys Lab
 ## Developed by Sami Sadat
 from cv import model
-
-
+from paho.mqtt import client as mqtt
 	
 class detectFire(QThread):
 	imgSignal = pyqtSignal(np.ndarray, int, bool)
@@ -36,6 +37,20 @@ class detectFire(QThread):
 		self.cam_link = cam_link
 		self.index = index
 		self.threadactive = True
+		self.mqttc = mqtt.Client()
+		self.mqttc.connect("test.mosquitto.org", 1883)
+
+	def center_obj(self,lis):
+	    if len(lis) == 0:
+	        x=0
+	        y=0
+	        
+	    elif len(lis) != 0:
+	        x=((lis[0][2]+lis[0][0])//2)
+	        y=((lis[0][3]+lis[0][1])//2)
+	    
+	    lis2=[x,y]
+	    return lis2 
 
 	def run(self):
 		with self._lock:
@@ -62,10 +77,24 @@ class detectFire(QThread):
 			image = self.img.copy()
 
 			# Write Code For Processing
+			fire = False
 			frame = image
-			frame=cv2.flip(frame,1)
+			#frame=cv2.flip(frame,1)
 			results = model(frame)
 			image = np.squeeze(results.render())
+
+			co_ordinates = (self.center_obj(results.xyxy[0]))
+			if co_ordinates[0]!=0 and co_ordinates[1]!=0:
+				fire = "ON"
+				try:
+				    self.mqttc.publish("test","Fire!!!!!")
+				    print("Fire...Sending")
+				# Send the data to server
+				# data = {'Alarm':"ON"}
+				# try:
+				#     r = requests.post('http://localhost:5000/detected_fire', json=data)
+				except requests.exceptions.RequestException as e:
+				    print(e)
 
 			if self.cam_link==0:
 				scale_percent = 100 
@@ -78,6 +107,7 @@ class detectFire(QThread):
 			#self.img = cv2.cvtColor(self.img,cv2.COLOR_BGR2RGB)
 
 			self.imgSignal.emit(image, self.index, True)
+			
 			
 			#cv2.waitKey(capture_delay) & 0xFF # works, dont set 1, will crash, too fast
 		
