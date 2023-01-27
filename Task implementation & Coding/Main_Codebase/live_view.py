@@ -22,6 +22,7 @@ from modules.newwindow import *
 import modules.thread 
 from modules.detect_face import detectFace
 from modules.detect_parkingspace import detectparking
+from modules.detect_fire import detectFire
 from modules.status import *
 from camera_links import cameraConnect 
 from Forms import resource
@@ -1316,13 +1317,13 @@ class Live_view(QWidget):
             lst = [selected_analytics,index]
             cam_link = self.cam_links[index]
 
-            if index==0 and selected_analytics==1:
+            if index==0 and selected_analytics==5:
                 self.cam1_analytics_start()
             elif index==1 and selected_analytics==2:
                 self.cam2_analytics_start()
-            elif index==2 and selected_analytics==2:
+            elif index==2 and selected_analytics==1:
                 self.cam3_analytics_start()
-            elif index==3 and selected_analytics==2:
+            elif index==3 and selected_analytics==5:
                 self.cam4_analytics_start()          
             elif index==4 and selected_analytics==2:
                 self.cam5_analytics_start()  
@@ -2117,8 +2118,7 @@ class Live_view(QWidget):
             print("Stopped")
         except:
             pass
-        self.cam1_analytics = modules.detect_face.detectFace(self,self.cam_links[0], 0) #detectface
-        #self.cam1_analytics = modules.detect_parkingspace.detectparking(self,self.cam_links[0], 0) #detectparking        
+        self.cam1_analytics = detectFire(self,self.cam_links[0], 0) #detectface
         self.cam1_analytics.imgSignal.connect(self.getImg)
         self.cam1_analytics.start() 
     def cam1_raw_stop(self): 
@@ -2154,7 +2154,7 @@ class Live_view(QWidget):
             self.cam3_raw_stop()
         except:
             pass
-        self.cam3_analytics =modules.detect_parkingspace.detectparking(self,self.cam_links[2], 2)
+        self.cam3_analytics = modules.detect_face.detectFace(self,self.cam_links[2], 2) 
         self.cam3_analytics.imgSignal.connect(self.getImg)
         self.cam3_analytics.start() 
     def cam3_raw_stop(self): 
@@ -2171,7 +2171,7 @@ class Live_view(QWidget):
             self.cam4_raw_stop()
         except:
             pass
-        self.cam4_analytics = modules.detect_parkingspace.detectparking(self,self.cam_links[3], 3)
+        self.cam4_analytics = modules.detect_face.detectFace(self,self.cam_links[3], 3)
         self.cam4_analytics.imgSignal.connect(self.getImg)
         self.cam4_analytics.start() 
     def cam4_raw_stop(self): 
