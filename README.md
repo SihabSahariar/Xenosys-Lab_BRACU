@@ -7,17 +7,17 @@ $ pip install -r requirements.txt
 
 # System Design & Planning & Idea Assesment
 ### Use Case Diagram
-![](System Design & Planning & Idea Assesment/Use Case Diagram.png)
+![](diagrams/4.png)
 ### Swimlane Diagram
-![](System Design & Planning & Idea Assesment/Swimlane Digrame.png)
+![](diagrams/3.png)
 ### Block Diagram
-![](System Design & Planning & Idea Assesment/Block Diagram.png)
+![](diagrams/1.png)
 ### Data Flow Diagram
-![](System Design & Planning & Idea Assesment/Data Flow Diagram.png)
+![](diagrams/5.png)
 ### ER Diagram
-![](System Design & Planning & Idea Assesment/Entity Relationship Diagram.png)
+![](diagrams/2.png)
 ### State Diagram
-![](System Design & Planning & Idea Assesment/State Diagram.png)
+![](diagrams/6.png)
 
 # User Interface
 ### Spalsh Screen
